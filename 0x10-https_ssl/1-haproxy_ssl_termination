@@ -18,12 +18,12 @@ defaults
         timeout connect 5000
         timeout client  50000
         timeout server  50000
-frontend frontend
+frontend www_frontend
     bind *:80
     bind *:443 ssl crt /etc/haproxy/certs/www.nyambu.tech.pem
     mode http
     default_backend backend
-backend backend
+backend www_backend
     balance roundrobin
     server 438060-web-01 18.210.14.174:80 check
     server 438060-web-02 100.25.167.146:80 check

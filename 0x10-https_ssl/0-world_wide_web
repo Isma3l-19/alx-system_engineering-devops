@@ -9,15 +9,15 @@ dns_info() {
 
         echo "The subdomain $SUB_DOMAIN is a $RECORD_TYPE record and points to $DESTINATION"
 }
-
 dig_domain() {
-	local SUB_DOMAIN="$1"
-	local DOMAIN="$2"
+    local SUB_DOMAIN="$1"
+    local DOMAIN="$2"
 
-	dig_ouput=$(dig "$SUB_DOMAIN.$DOMAIN" | grep -A1 "ANSWER SECTION" | tail -n 1)
-	record=$(echo "$dig_ouput" | awk '{print $4}')
-	ip=$(echo "$dig_ouput" | awk '{print $5}')
-	dns_info "$SUB_DOMAIN" "$record" "$ip"
+    while IFS= read -r line; do
+        record=$(echo "$line" | awk '{print $4}')
+        ip=$(echo "$line" | awk '{print $5}')
+        dns_info "$SUB_DOMAIN" "$record" "$ip"
+    done < <(dig "$SUB_DOMAIN.$DOMAIN" +short)
 }
 my_array=("www" "lb-01" "web-01" "web-02")
 if [ $# -lt 1 ]; then

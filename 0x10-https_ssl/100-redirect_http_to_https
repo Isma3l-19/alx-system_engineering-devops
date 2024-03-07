@@ -20,7 +20,6 @@ defaults
         timeout server  50000
 frontend http_front
     bind *:80
-    bind *:443 ssl crt /etc/haproxy/certs/www.nyambu.tech.pem
     redirect scheme https code 301 if !{ ssl_fc }
     default_backend http_back
 backend http_back
